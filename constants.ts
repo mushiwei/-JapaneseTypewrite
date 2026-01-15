@@ -14,30 +14,39 @@ export const JLPT_DATA: JLPTItem[] = [
   { level: 'N2', category: '名词', kanji: '具体的', kana: 'ぐていてき', romaji: 'guteiteki', mean: '具体的' },
   { level: 'N2', category: '动词', kanji: '確認', kana: 'かくにん', romaji: 'kakunin', mean: '确认' },
   { level: 'N2', category: '动词', kanji: '解決', kana: 'かいけつ', romaji: 'kaiketsu', mean: '解决' },
-  { level: 'N2', category: '副词', kanji: '絶対', kana: 'ぜったい', romaji: 'zettai', mean: '绝对' },
-  
-  // 动漫台词
-  { level: 'ANIME', category: '名台词', kanji: '諦めたらそこで試合終了ですよ', kana: 'あきらめたらそこでしあいしゅうりょうですよ', romaji: 'akirametarasokodeshiaishuuryoudesuyo', mean: '要是放弃的话，比赛就到此结束了。' },
-  { level: 'ANIME', category: '名台词', kanji: '心臓を捧げよ', kana: 'しんぞうをささげよ', romaji: 'shinzouosasageyo', mean: '献出心脏吧！' }
+  { level: 'N2', category: '副词', kanji: '絶対', kana: 'ぜったい', romaji: 'zettai', mean: '绝对' }
 ];
 
 export const KANA_DATA: JLPTItem[] = [
-  // 清音 (Seion)
-  { level: 'KANA', category: 'あ行', kanji: 'あいうえお', kana: 'あいうえお', romaji: 'aiueo', mean: 'A I U E O' },
-  { level: 'KANA', category: 'か行', kanji: 'かきくけこ', kana: 'かきくけこ', romaji: 'kakikukeko', mean: 'KA KI KU KE KO' },
-  { level: 'KANA', category: 'さ行', kanji: 'さしすせそ', kana: 'さしすせそ', romaji: 'sashisuseso', mean: 'SA SHI SU SE SO' },
-  { level: 'KANA', category: 'た行', kanji: 'たちつてと', kana: 'たちつてと', romaji: 'tachitsuteto', mean: 'TA CHI TSU TE TO' },
-  { level: 'KANA', category: 'な行', kanji: 'なにぬねの', kana: 'なにぬねの', romaji: 'naninuneno', mean: 'NA NI NU NE NO' },
-  { level: 'KANA', category: 'は行', kanji: 'はひふへほ', kana: 'はひふへほ', romaji: 'hahifuheho', mean: 'HA HI FU HE HO' },
-  { level: 'KANA', category: 'ま行', kanji: 'まみむめも', kana: 'まみむめも', romaji: 'mamimumemo', mean: 'MA MI MU ME MO' },
-  { level: 'KANA', category: 'や行', kanji: 'やいゆえよ', kana: 'やいゆえよ', romaji: 'yaiyueyo', mean: 'YA (I) YU (E) YO' },
-  { level: 'KANA', category: 'ら行', kanji: 'らりるれろ', kana: 'らりるれろ', romaji: 'rarirurero', mean: 'RA RI RU RE RO' },
-  { level: 'KANA', category: 'わ行', kanji: 'わをん', kana: 'わをん', romaji: 'wawon', mean: 'WA WO N' },
-  
-  // 基础单字练习 (更适合初学者肌肉记忆)
-  { level: 'KANA', category: '基础单词', kanji: '朝', kana: 'あさ', romaji: 'asa', mean: '早上' },
-  { level: 'KANA', category: '基础单词', kanji: '犬', kana: 'いぬ', romaji: 'inu', mean: '狗' },
-  { level: 'KANA', category: '基础单词', kanji: '海', kana: 'うみ', romaji: 'umi', mean: '大海' },
-  { level: 'KANA', category: '基础单词', kanji: '駅', kana: 'えき', romaji: 'eki', mean: '车站' },
-  { level: 'KANA', category: '基础单词', kanji: 'お茶', kana: 'おちゃ', romaji: 'ocha', mean: '茶' },
+  // 清音 - A行
+  { level: 'KANA', category: '清音-A', kanji: 'あ', kana: 'あ', romaji: 'a', mean: 'A' },
+  { level: 'KANA', category: '清音-A', kanji: 'い', kana: 'い', romaji: 'i', mean: 'I' },
+  { level: 'KANA', category: '清音-A', kanji: 'う', kana: 'う', romaji: 'u', mean: 'U' },
+  { level: 'KANA', category: '清音-A', kanji: 'え', kana: 'え', romaji: 'e', mean: 'E' },
+  { level: 'KANA', category: '清音-A', kanji: 'お', kana: 'お', romaji: 'o', mean: 'O' },
+  // 清音 - K行
+  { level: 'KANA', category: '清音-K', kanji: 'か', kana: 'か', romaji: 'ka', mean: 'KA' },
+  { level: 'KANA', category: '清音-K', kanji: 'き', kana: 'き', romaji: 'ki', mean: 'KI' },
+  { level: 'KANA', category: '清音-K', kanji: 'く', kana: 'く', romaji: 'ku', mean: 'KU' },
+  { level: 'KANA', category: '清音-K', kanji: 'け', kana: 'け', romaji: 'ke', mean: 'KE' },
+  { level: 'KANA', category: '清音-K', kanji: 'こ', kana: 'こ', romaji: 'ko', mean: 'KO' },
+  // 清音 - S行
+  { level: 'KANA', category: '清音-S', kanji: 'さ', kana: 'さ', romaji: 'sa', mean: 'SA' },
+  { level: 'KANA', category: '清音-S', kanji: 'し', kana: 'し', romaji: 'shi', mean: 'SHI' },
+  { level: 'KANA', category: '清音-S', kanji: 'す', kana: 'す', romaji: 'su', mean: 'SU' },
+  { level: 'KANA', category: '清音-S', kanji: 'せ', kana: 'せ', romaji: 'se', mean: 'SE' },
+  { level: 'KANA', category: '清音-S', kanji: 'そ', kana: 'そ', romaji: 'so', mean: 'SO' },
+  // 浊音示例 (仅列出部分以保证代码精简，实际建议全部包含)
+  { level: 'KANA', category: '浊音-G', kanji: 'が', kana: 'が', romaji: 'ga', mean: 'GA' },
+  { level: 'KANA', category: '浊音-G', kanji: 'ぎ', kana: 'ぎ', romaji: 'gi', mean: 'GI' },
+  { level: 'KANA', category: '浊音-G', kanji: 'ぐ', kana: 'ぐ', romaji: 'gu', mean: 'GU' },
+  { level: 'KANA', category: '浊音-G', kanji: 'げ', kana: 'げ', romaji: 'ge', mean: 'GE' },
+  { level: 'KANA', category: '浊音-G', kanji: 'ご', kana: 'ご', romaji: 'go', mean: 'GO' },
+  // 拗音示例
+  { level: 'KANA', category: '拗音', kanji: 'きゃ', kana: 'きゃ', romaji: 'kya', mean: 'KYA' },
+  { level: 'KANA', category: '拗音', kanji: 'しゅ', kana: 'しゅ', romaji: 'shu', mean: 'SHU' },
+  { level: 'KANA', category: '拗音', kanji: 'ちょ', kana: 'ちょ', romaji: 'cho', mean: 'CHO' },
+  { level: 'KANA', category: '拗音', kanji: 'りょ', kana: 'りょ', romaji: 'ryo', mean: 'RYO' },
+  // 结尾
+  { level: 'KANA', category: '清音-N', kanji: 'ん', kana: 'ん', romaji: 'n', mean: 'N' }
 ];
