@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { PracticeState, TrainingStats, JLPTItem } from '../types';
 import AudioButton from './AudioButton';
 import { getGeminiTTS, playAudioBase64 } from '../services/geminiService';
@@ -20,6 +19,7 @@ const TypingView: React.FC<TypingViewProps> = ({ items, title, onFinish }) => {
     isComplete: false,
     history: []
   });
+  const [voiceAssistEnabled, setVoiceAssistEnabled] = useState(true);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const currentItem = items[state.currentIndex];
@@ -31,10 +31,23 @@ const TypingView: React.FC<TypingViewProps> = ({ items, title, onFinish }) => {
     }
   }, [state.currentIndex]);
 
+  const speak = (text: string, lang: string = 'zh-CN') => {
+    if (!voiceAssistEnabled || !('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = lang;
+    utterance.rate = 1.05;
+    utterance.pitch = 1;
+    window.speechSynthesis.speak(utterance);
+  };
+
   const handleInitialVoice = async () => {
-    // Fix: currentItem.display does not exist on JLPTItem, using currentItem.kanji instead
     const audio = await getGeminiTTS(currentItem.kanji, 'teacher');
-    if (audio) playAudioBase64(audio);
+    if (audio) {
+      playAudioBase64(audio);
+    } else {
+      speak(currentItem.kana, 'ja-JP');
+    }
   };
 
   const calculateWPM = () => {
@@ -50,19 +63,20 @@ const TypingView: React.FC<TypingViewProps> = ({ items, title, onFinish }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!state.startTime) setState(p => ({ ...p, startTime: Date.now() }));
-    
+
     const val = e.target.value.toLowerCase();
     const target = currentItem.romaji.toLowerCase();
 
     if (target.startsWith(val)) {
-      // Correct input
-      setState(prev => ({ 
-        ...prev, 
-        userInput: val, 
-        correctChars: prev.correctChars + 1 
+      setState(prev => ({
+        ...prev,
+        userInput: val,
+        correctChars: prev.correctChars + 1
       }));
-      
+
       if (val === target) {
+        speak('正确', 'zh-CN');
+
         if (state.currentIndex === items.length - 1) {
           const endTime = Date.now();
           const finalStats: TrainingStats = {
@@ -73,35 +87,44 @@ const TypingView: React.FC<TypingViewProps> = ({ items, title, onFinish }) => {
             rank: calculateAccuracy() > 95 ? 'S' : calculateAccuracy() > 85 ? 'A' : 'B'
           };
           setState(p => ({ ...p, isComplete: true }));
+          speak('训练完成', 'zh-CN');
           onFinish(finalStats);
         } else {
           setState(prev => ({ ...prev, userInput: '', currentIndex: prev.currentIndex + 1 }));
         }
       }
     } else {
-      // Error input
       setState(prev => ({ ...prev, errorChars: prev.errorChars + 1 }));
+      speak('输入错误，请重试', 'zh-CN');
     }
   };
 
   return (
     <div className="w-full max-w-5xl mx-auto space-y-6">
-      <div className="flex justify-between items-end bg-black text-white p-4 manga-border">
+      <div className="flex flex-col gap-3 md:flex-row md:justify-between md:items-end bg-black text-white p-4 manga-border">
         <div className="space-y-1">
           <h2 className="text-xl font-black uppercase tracking-widest">{title}</h2>
-          <div className="flex space-x-6 text-xs font-mono opacity-70">
+          <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs font-mono opacity-70">
             <span>WPM: {calculateWPM()}</span>
             <span>ACCURACY: {calculateAccuracy()}%</span>
             <span>ERRORS: {state.errorChars}</span>
           </div>
         </div>
-        <div className="text-4xl font-black">
-          {state.currentIndex + 1}<span className="text-xl opacity-50">/{items.length}</span>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => setVoiceAssistEnabled(prev => !prev)}
+            className={`px-3 py-2 text-xs font-bold border-2 border-white transition-colors ${voiceAssistEnabled ? 'bg-white text-black' : 'bg-transparent text-white'}`}
+            title="切换打字语音反馈"
+          >
+            语音反馈 {voiceAssistEnabled ? 'ON' : 'OFF'}
+          </button>
+          <div className="text-4xl font-black">
+            {state.currentIndex + 1}<span className="text-xl opacity-50">/{items.length}</span>
+          </div>
         </div>
       </div>
 
       <div className="relative bg-white manga-border p-12 min-h-[400px] flex flex-col items-center justify-center space-y-8">
-        {/* Kanji & Category */}
         <div className="text-center space-y-4">
           <span className="inline-block px-3 py-1 bg-black text-white text-xs font-bold mb-2">
             {currentItem.category}
@@ -120,12 +143,11 @@ const TypingView: React.FC<TypingViewProps> = ({ items, title, onFinish }) => {
           </p>
         </div>
 
-        {/* Input Zone */}
         <div className="w-full max-w-xl space-y-4">
           <div className="flex justify-center space-x-2">
             {currentItem.romaji.split('').map((char, i) => {
-              let color = "text-gray-200";
-              if (i < state.userInput.length) color = "text-black border-b-4 border-black";
+              let color = 'text-gray-200';
+              if (i < state.userInput.length) color = 'text-black border-b-4 border-black';
               return (
                 <span key={i} className={`text-4xl font-mono font-black uppercase transition-all ${color}`}>
                   {char}
@@ -133,7 +155,7 @@ const TypingView: React.FC<TypingViewProps> = ({ items, title, onFinish }) => {
               );
             })}
           </div>
-          
+
           <input
             ref={inputRef}
             type="text"
@@ -142,14 +164,14 @@ const TypingView: React.FC<TypingViewProps> = ({ items, title, onFinish }) => {
             onChange={handleChange}
             autoFocus
           />
-          
+
           <div className="flex justify-center items-center h-20 space-x-1">
-             {state.userInput.split('').map((c, i) => (
-               <span key={i} className="text-7xl font-black text-pink-600 animate-in zoom-in duration-75">
-                 {c.toUpperCase()}
-               </span>
-             ))}
-             <div className="w-4 h-16 bg-black animate-pulse ml-2" />
+            {state.userInput.split('').map((c, i) => (
+              <span key={i} className="text-7xl font-black text-pink-600 animate-in zoom-in duration-75">
+                {c.toUpperCase()}
+              </span>
+            ))}
+            <div className="w-4 h-16 bg-black animate-pulse ml-2" />
           </div>
         </div>
       </div>
